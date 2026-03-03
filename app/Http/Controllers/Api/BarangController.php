@@ -41,7 +41,7 @@ class BarangController extends Controller
             ], 422);
         }
 
-        $barang = Barang::create($request->all());
+        $barang = Barang::create($validator->validated());
 
         return response()->json([
             'success' => true,
@@ -67,10 +67,10 @@ class BarangController extends Controller
     public function update(Request $request, Barang $barang)
     {
         $validator = Validator::make($request->all(), [
-            'nama_barang' => 'required|string|max:255',
-            'kategori' => 'required|in:Smartphone,Notebook,Keyboard,Mouse,Hardisk',
-            'harga' => 'required|numeric|min:0',
-            'tanggal_pembelian' => 'required|date',
+            'nama_barang' => 'sometimes|required|string|max:255',
+            'kategori' => 'sometimes|required|in:Smartphone,Notebook,Keyboard,Mouse,Hardisk',
+            'harga' => 'sometimes|required|numeric|min:0',
+            'tanggal_pembelian' => 'sometimes|required|date',
         ]);
 
         if ($validator->fails()) {
@@ -80,7 +80,7 @@ class BarangController extends Controller
             ], 422);
         }
 
-        $barang->update($request->all());
+        $barang->update($validator->validated());
 
         return response()->json([
             'success' => true,

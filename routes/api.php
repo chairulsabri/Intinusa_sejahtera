@@ -17,7 +17,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     // Barang CRUD API
-    Route::apiResource('barang', BarangController::class);
+    Route::apiResource('barang', BarangController::class)->names('api.barang');
 
     // Dashboard Stats API
     Route::get('/dashboard/stats', [BarangController::class, 'dashboardStats']);

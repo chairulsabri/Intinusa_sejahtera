@@ -29,39 +29,36 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nama_barang' => 'required|string|max:255',
             'kategori' => 'required|in:Smartphone,Notebook,Keyboard,Mouse,Hardisk',
             'harga' => 'required|numeric|min:0',
             'tanggal_pembelian' => 'required|date',
         ]);
 
-        Barang::create($request->all());
+        Barang::create($validated);
 
         return redirect()->route('barang.index')->with('success', 'Barang berhasil ditambahkan.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Barang $barang)
+    public function edit($id)
     {
+        $barang = Barang::findOrFail($id);
         return view('barang.form', compact('barang'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Barang $barang)
+    public function update(Request $request, $id)
     {
-        $request->validate([
+        $barang = Barang::findOrFail($id);
+
+        $validated = $request->validate([
             'nama_barang' => 'required|string|max:255',
             'kategori' => 'required|in:Smartphone,Notebook,Keyboard,Mouse,Hardisk',
             'harga' => 'required|numeric|min:0',
             'tanggal_pembelian' => 'required|date',
         ]);
 
-        $barang->update($request->all());
+        $barang->update($validated);
 
         return redirect()->route('barang.index')->with('success', 'Barang berhasil diperbarui.');
     }
@@ -69,8 +66,9 @@ class BarangController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Barang $barang)
+    public function destroy($id)
     {
+        $barang = Barang::findOrFail($id);
         $barang->delete();
 
         return redirect()->route('barang.index')->with('success', 'Barang berhasil dihapus.');
